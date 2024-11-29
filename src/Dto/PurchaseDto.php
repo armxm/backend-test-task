@@ -8,7 +8,7 @@ namespace App\Dto;
 use App\Enum\ProcessorType;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PurchaseDTO
+class PurchaseDto implements RequestDtoInterface
 {
     public function __construct(
         #[Assert\NotNull(message: 'Product ID is required')]
@@ -28,5 +28,20 @@ class PurchaseDTO
         #[Assert\NotBlank(message: 'Payment processor is required')]
         public ?ProcessorType $paymentProcessor,
     ) {
+    }
+
+    public function getProduct(): int
+    {
+        return $this->product;
+    }
+
+    public function getTaxNumber(): string
+    {
+        return $this->taxNumber;
+    }
+
+    public function getCouponCode(): string
+    {
+        return $this->couponCode;
     }
 }

@@ -5,30 +5,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\PurchaseDTO;
+use App\Dto\PurchaseDto;
 use App\Service\PurchaseService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
-class PurchaseController extends BaseController
+class PurchaseController extends AbstractController
 {
     #[Route('/purchase', name: 'purchase', methods: ['POST'])]
-    public function purchase(Request $request, PurchaseService $service): JsonResponse
-    {
-        try {
-            $dto = $this->deserialize($request->getContent(), PurchaseDTO::class);
-            $errors = $this->validate($dto);
-
-            if ($errors) {
-                return $this->error($errors);
-            }
-
-            $service->purchase($dto);
-
-            return $this->success();
-        } catch (\Exception $e) {
-            return $this->error([$e->getMessage()]);
-        }
+    public function purchase(
+        #[MapRequestPayload] PurchaseDto $dto,
+        PurchaseService $service,
+    ): JsonResponse {
+        $service->purchase($dto);
+        return $this->json(['success' => true, 'data' => []]);
     }
 }

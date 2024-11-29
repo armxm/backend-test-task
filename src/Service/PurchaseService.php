@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Dto\PurchaseDTO;
+use App\Dto\PurchaseDto;
 use App\Entity\Purchase;
 use App\Factory\PaymentProcessorFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +18,7 @@ readonly class PurchaseService
     ) {
     }
 
-    public function purchase(PurchaseDTO $dto): void
+    public function purchase(PurchaseDto $dto): void
     {
         $totalPriceDto = $this->priceCalculator->calculate($dto);
         $paymentProcessor = PaymentProcessorFactory::create($dto->paymentProcessor);

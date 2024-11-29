@@ -8,7 +8,7 @@ namespace App\Dto;
 use App\Entity\Coupon;
 use App\Entity\Product;
 
-class TotalPriceResultDTO
+class TotalPriceResultDto
 {
     public function __construct(
         public float $price,

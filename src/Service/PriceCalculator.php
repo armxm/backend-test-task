@@ -5,9 +5,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Dto\CalculatePriceDTO;
-use App\Dto\PurchaseDTO;
-use App\Dto\TotalPriceResultDTO;
+use App\Dto\RequestDtoInterface;
+use App\Dto\TotalPriceResultDto;
 use App\Repository\CouponRepository;
 use App\Repository\ProductRepository;
 use Exception;
@@ -21,19 +20,19 @@ readonly class PriceCalculator
     ) {
     }
 
-    public function calculate(CalculatePriceDTO|PurchaseDTO $dto): TotalPriceResultDTO
+    public function calculate(RequestDtoInterface $dto): TotalPriceResultDto
     {
-        $product = $this->productRepository->find($dto->product);
+        $product = $this->productRepository->find($dto->getProduct());
         if (!$product) {
             throw new Exception('Product not found');
         }
 
-        $coupon = $this->couponRepository->findOneBy(['code' => $dto->couponCode]);
+        $coupon = $this->couponRepository->findOneBy(['code' => $dto->getCouponCode()]);
         if (!$coupon) {
             throw new Exception('Coupon not found');
         }
 
-        $country = $this->countryResolver->findCountryByTaxNumber($dto->taxNumber);
+        $country = $this->countryResolver->findCountryByTaxNumber($dto->getTaxNumber());
         if (!$country) {
             throw new Exception('Country not found');
         }
@@ -41,7 +40,7 @@ readonly class PriceCalculator
         $taxAmount = $product->getPrice() * $country->getTaxRate() / 100;
         $priceAfterDiscount = $product->getPrice() - $coupon->getDiscount($product->getPrice());
 
-        return new TotalPriceResultDTO(
+        return new TotalPriceResultDto(
             $priceAfterDiscount + $taxAmount,
             $product,
             $coupon,

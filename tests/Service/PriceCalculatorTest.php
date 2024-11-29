@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Dto\CalculatePriceDTO;
+use App\Dto\CalculatePriceDto;
 use App\Entity\Coupon;
 use App\Entity\Product;
 use App\Enum\CouponType;
@@ -53,7 +53,7 @@ class PriceCalculatorTest extends TestCase
         $coupon = new Coupon($couponCode, CouponType::from($couponType), $discount);
         $this->couponRepository->shouldReceive('findOneBy')->with(['code' => $couponCode])->andReturn($coupon);
 
-        $dto = new CalculatePriceDTO($id, $taxNumber, $couponCode);
+        $dto = new CalculatePriceDto($id, $taxNumber, $couponCode);
         $result = $this->priceCalculator->calculate($dto);
 
         // Проверяем результат
