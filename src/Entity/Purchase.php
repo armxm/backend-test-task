@@ -30,52 +30,14 @@ class Purchase
     #[ORM\Column(type: 'datetime')]
     private DateTimeImmutable $createdAt;
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getProduct(): Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(Product $product): self
-    {
+    public function __construct(
+        Product $product,
+        Coupon $coupon,
+        float $price,
+    ) {
         $this->product = $product;
-        return $this;
-    }
-
-    public function getCoupon(): Coupon
-    {
-        return $this->coupon;
-    }
-
-    public function setCoupon(Coupon $coupon): self
-    {
         $this->coupon = $coupon;
-        return $this;
-    }
-
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): self
-    {
         $this->price = $price;
-        return $this;
-    }
-
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-        return $this;
+        $this->createdAt = new DateTimeImmutable();
     }
 }

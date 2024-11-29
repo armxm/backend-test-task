@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -39,5 +40,21 @@ class BaseController extends AbstractController
         }
 
         return $errorMessages;
+    }
+
+    protected function success(array $data = [], int $code = 200): JsonResponse
+    {
+        return $this->json([
+            'success' => true,
+            'data' => $data,
+        ], $code);
+    }
+
+    protected function error(array $errors = [], int $code = 400): JsonResponse
+    {
+        return $this->json([
+            'success' => false,
+            'errors' => $errors,
+        ], $code);
     }
 }

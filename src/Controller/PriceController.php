@@ -17,16 +17,16 @@ class PriceController extends BaseController
     public function calculatePrice(Request $request, PriceCalculator $calculator): JsonResponse
     {
         try {
-            $dto = $this->deserialize($request->getContent(), CalculatePriceDTO::class, 'json');
+            $dto = $this->deserialize($request->getContent(), CalculatePriceDTO::class);
             $errors = $this->validate($dto);
 
             if ($errors) {
-                return $this->json(['error' => $errors], 400);
+                return $this->error($errors);
             }
 
-            return $this->json(['price' => $calculator->calculate($dto)]);
+            return $this->success(['price' => $calculator->calculate($dto)->price]);
         } catch (\Exception $e) {
-            return $this->json(['error' => $e->getMessage()], 400);
+            return $this->error([$e->getMessage()]);
         }
     }
 }

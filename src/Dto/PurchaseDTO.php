@@ -5,9 +5,10 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
+use App\Enum\ProcessorType;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CalculatePriceDTO
+class PurchaseDTO
 {
     public function __construct(
         #[Assert\NotNull(message: "Product ID is required.")]
@@ -23,6 +24,9 @@ class CalculatePriceDTO
 
         #[Assert\NotBlank(message: "Coupon code is required.")]
         public ?string $couponCode,
+
+        #[Assert\NotBlank(message: "Payment processor is required.")]
+        public ?ProcessorType $paymentProcessor,
     ) {
     }
 }

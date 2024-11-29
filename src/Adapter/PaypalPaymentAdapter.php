@@ -14,11 +14,11 @@ class PaypalPaymentAdapter implements PaymentProcessorInterface
     {
         try {
             $paypalPaymentProcessor = new PaypalPaymentProcessor();
-            $paypalPaymentProcessor->pay((int) $amount * 100);
+            $paypalPaymentProcessor->pay((int)$amount * 100);
 
             return true;
-        } catch (\Throwable) {
-            return false;
+        } catch (\Exception) {
+            throw new \Exception('Paypal payment failed');
         }
     }
 }

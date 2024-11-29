@@ -14,10 +14,10 @@ class StripePaymentAdapter implements PaymentProcessorInterface
     {
         try {
             $stripePaymentProcessor = new StripePaymentProcessor();
-            
+
             return $stripePaymentProcessor->processPayment($amount);
         } catch (\Throwable) {
-            return false;
+            throw new \Exception('Stripe payment failed');
         }
     }
 }

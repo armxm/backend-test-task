@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\CalculatePriceDTO;
+use App\Dto\PurchaseDTO;
+use App\Dto\TotalPriceResultDTO;
 use App\Repository\CouponRepository;
 use App\Repository\ProductRepository;
 use Exception;
@@ -19,7 +21,7 @@ readonly class PriceCalculator
     ) {
     }
 
-    public function calculate(CalculatePriceDTO $dto): float
+    public function calculate(CalculatePriceDTO|PurchaseDTO $dto): TotalPriceResultDTO
     {
         $product = $this->productRepository->find($dto->product);
         if (!$product) {
@@ -39,6 +41,10 @@ readonly class PriceCalculator
         $taxAmount = $product->getPrice() * $country->getTaxRate() / 100;
         $priceAfterDiscount = $product->getPrice() - $coupon->getDiscount($product->getPrice());
 
-        return $priceAfterDiscount + $taxAmount;
+        return new TotalPriceResultDTO(
+            $priceAfterDiscount + $taxAmount,
+            $product,
+            $coupon,
+        );
     }
 }
