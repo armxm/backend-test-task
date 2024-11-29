@@ -55,8 +55,7 @@ class PriceCalculatorTest extends TestCase
 
         $dto = new CalculatePriceDto($id, $taxNumber, $couponCode);
         $result = $this->priceCalculator->calculate($dto);
-
-        // Проверяем результат
+        
         $this->assertEquals($expectedPrice, $result->price);
     }
 
