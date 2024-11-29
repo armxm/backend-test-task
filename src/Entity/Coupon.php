@@ -25,6 +25,16 @@ class Coupon
     #[ORM\Column(type: "float")]
     private float $value;
 
+    public function __construct(
+        string $code,
+        CouponType $type,
+        float $value,
+    ) {
+        $this->code = $code;
+        $this->type = $type;
+        $this->value = $value;
+    }
+
     public function getDiscount(float $price): float
     {
         return match ($this->type) {

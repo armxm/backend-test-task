@@ -21,6 +21,14 @@ class Product
     #[ORM\Column(type: 'float')]
     private float $price;
 
+    public function __construct(
+        string $name,
+        float $price,
+    ) {
+        $this->name = $name;
+        $this->price = $price;
+    }
+
     public function getPrice(): float
     {
         return $this->price;

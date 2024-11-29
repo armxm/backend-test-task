@@ -72,6 +72,8 @@
         }
     },
     "require-dev": {
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^11.4",
         "symfony/maker-bundle": "^1.61"
     }
 }
