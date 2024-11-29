@@ -10,13 +10,10 @@ use Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor;
 
 class StripePaymentAdapter implements PaymentProcessorInterface
 {
-    public function pay(float $amount): bool
+    public function pay(float $amount): void
     {
-        try {
-            $stripePaymentProcessor = new StripePaymentProcessor();
-
-            return $stripePaymentProcessor->processPayment($amount);
-        } catch (\Throwable) {
+        $stripePaymentProcessor = new StripePaymentProcessor();
+        if (!$stripePaymentProcessor->processPayment($amount)) {
             throw new \Exception('Stripe payment failed');
         }
     }

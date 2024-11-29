@@ -9,6 +9,17 @@ Content-Type: application/json
   "couponCode": "D15"
 }
 
+### Response for Calculate Price
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "success": true,
+  "data": {
+    "price": 104
+  }
+}
+
 ### Execute Purchase
 POST http://127.0.0.1:8337/purchase
 Accept: application/json
@@ -19,4 +30,13 @@ Content-Type: application/json
   "taxNumber": "IT12345678900",
   "couponCode": "D15",
   "paymentProcessor": "paypal"
+}
+
+### Response for Execute Purchase
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "success": true,
+  "data": []
 }

@@ -22,10 +22,7 @@ readonly class PurchaseService
     {
         $totalPriceDto = $this->priceCalculator->calculate($dto);
         $paymentProcessor = PaymentProcessorFactory::create($dto->paymentProcessor);
-
-        if (!$paymentProcessor->pay($totalPriceDto->price)) {
-            throw new \Exception('Payment processor failed to pay');
-        }
+        $paymentProcessor->pay($totalPriceDto->price);
 
         $purchase = new Purchase(
             $totalPriceDto->product,

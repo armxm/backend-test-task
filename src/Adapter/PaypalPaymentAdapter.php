@@ -10,13 +10,12 @@ use Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor;
 
 class PaypalPaymentAdapter implements PaymentProcessorInterface
 {
-    public function pay(float $amount): bool
+    public function pay(float $amount): void
     {
         try {
             $paypalPaymentProcessor = new PaypalPaymentProcessor();
             $paypalPaymentProcessor->pay((int)$amount * 100);
 
-            return true;
         } catch (\Exception) {
             throw new \Exception('Paypal payment failed');
         }
