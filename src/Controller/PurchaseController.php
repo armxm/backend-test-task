@@ -19,7 +19,11 @@ class PurchaseController extends AbstractController
         #[MapRequestPayload] PurchaseDto $dto,
         PurchaseService $service,
     ): JsonResponse {
-        $service->purchase($dto);
-        return $this->json(['success' => true, 'data' => []]);
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'isPurchased' => $service->purchase($dto),
+            ]
+        ]);
     }
 }

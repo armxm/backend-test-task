@@ -15,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Coupon[]    findAll()
  * @method Coupon[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CouponRepository extends ServiceEntityRepository
+class CouponRepository extends ServiceEntityRepository implements CouponRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

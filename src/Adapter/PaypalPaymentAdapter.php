@@ -8,16 +8,20 @@ namespace App\Adapter;
 use App\Service\PaymentProcessorInterface;
 use Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor;
 
-class PaypalPaymentAdapter implements PaymentProcessorInterface
+readonly class PaypalPaymentAdapter implements PaymentProcessorInterface
 {
-    public function pay(float $amount): void
+    public function __construct(
+        private PaypalPaymentProcessor $paymentProcessor,
+    ) {
+    }
+
+    public function pay(float $price): bool
     {
         try {
-            $paypalPaymentProcessor = new PaypalPaymentProcessor();
-            $paypalPaymentProcessor->pay((int)$amount * 100);
-
+            $this->paymentProcessor->pay((int)$price * 100);
+            return true;
         } catch (\Exception) {
-            throw new \Exception('Paypal payment failed');
+            return false;
         }
     }
 }

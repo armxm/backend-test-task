@@ -7,7 +7,7 @@ namespace App\Service;
 
 use App\Dto\PurchaseDto;
 use App\Entity\Purchase;
-use App\Factory\PaymentProcessorFactory;
+use App\Factory\PaymentProcessorFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class PurchaseService
@@ -15,14 +15,18 @@ readonly class PurchaseService
     public function __construct(
         private PriceCalculator $priceCalculator,
         private EntityManagerInterface $entityManager,
+        private PaymentProcessorFactoryInterface $paymentProcessorFactory,
     ) {
     }
 
-    public function purchase(PurchaseDto $dto): void
+    public function purchase(PurchaseDto $dto): bool
     {
         $totalPriceDto = $this->priceCalculator->calculate($dto);
-        $paymentProcessor = PaymentProcessorFactory::create($dto->paymentProcessor);
-        $paymentProcessor->pay($totalPriceDto->price);
+        $paymentProcessor = $this->paymentProcessorFactory->create($dto->paymentProcessor);
+
+        if (!$paymentProcessor->pay($totalPriceDto->price)) {
+            return false;
+        }
 
         $purchase = new Purchase(
             $totalPriceDto->product,
@@ -32,5 +36,7 @@ readonly class PurchaseService
 
         $this->entityManager->persist($purchase);
         $this->entityManager->flush();
+
+        return true;
     }
 }

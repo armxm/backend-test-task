@@ -8,13 +8,19 @@ namespace App\Adapter;
 use App\Service\PaymentProcessorInterface;
 use Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor;
 
-class StripePaymentAdapter implements PaymentProcessorInterface
+readonly class StripePaymentAdapter implements PaymentProcessorInterface
 {
-    public function pay(float $amount): void
+    public function __construct(
+        private StripePaymentProcessor $stripePaymentProcessor,
+    ) {
+    }
+
+    public function pay(float $price): bool
     {
-        $stripePaymentProcessor = new StripePaymentProcessor();
-        if (!$stripePaymentProcessor->processPayment($amount)) {
-            throw new \Exception('Stripe payment failed');
+        try {
+            return $this->stripePaymentProcessor->processPayment($price);
+        } catch (\Exception) {
+            return false;
         }
     }
 }

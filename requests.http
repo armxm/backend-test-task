@@ -38,5 +38,7 @@ Content-Type: application/json
 
 {
   "success": true,
-  "data": []
+  "data": {
+    "isPurchased": true
+  }
 }

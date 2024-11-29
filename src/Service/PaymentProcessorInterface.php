@@ -4,5 +4,5 @@ namespace App\Service;
 
 interface PaymentProcessorInterface
 {
-    public function pay(float $amount): void;
+    public function pay(float $price): bool;
 }

@@ -9,14 +9,22 @@ use App\Adapter\PaypalPaymentAdapter;
 use App\Adapter\StripePaymentAdapter;
 use App\Enum\ProcessorType;
 use App\Service\PaymentProcessorInterface;
+use Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor;
+use Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor;
 
-class PaymentProcessorFactory
+readonly class PaymentProcessorFactory implements PaymentProcessorFactoryInterface
 {
-    public static function create(ProcessorType $processorType): PaymentProcessorInterface
+    public function __construct(
+        private PaypalPaymentProcessor $paymentProcessor,
+        private StripePaymentProcessor $stripePaymentProcessor,
+    ) {
+    }
+
+    public function create(ProcessorType $processorType): PaymentProcessorInterface
     {
         return match ($processorType) {
-            ProcessorType::PAYPAL => new PaypalPaymentAdapter(),
-            ProcessorType::STRIPE => new StripePaymentAdapter(),
+            ProcessorType::PAYPAL => new PaypalPaymentAdapter($this->paymentProcessor),
+            ProcessorType::STRIPE => new StripePaymentAdapter($this->stripePaymentProcessor),
         };
     }
 }

@@ -7,15 +7,15 @@ namespace App\Service;
 
 use App\Dto\RequestDtoInterface;
 use App\Dto\TotalPriceResultDto;
-use App\Repository\CouponRepository;
-use App\Repository\ProductRepository;
+use App\Repository\CouponRepositoryInterface;
+use App\Repository\ProductRepositoryInterface;
 use Exception;
 
 readonly class PriceCalculator
 {
     public function __construct(
-        private ProductRepository $productRepository,
-        private CouponRepository $couponRepository,
+        private ProductRepositoryInterface $productRepository,
+        private CouponRepositoryInterface $couponRepository,
         private CountryResolver $countryResolver,
     ) {
     }
