@@ -15,7 +15,7 @@ use Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor;
 readonly class PaymentProcessorFactory implements PaymentProcessorFactoryInterface
 {
     public function __construct(
-        private PaypalPaymentProcessor $paymentProcessor,
+        private PaypalPaymentProcessor $paypalPaymentProcessor,
         private StripePaymentProcessor $stripePaymentProcessor,
     ) {
     }
@@ -23,7 +23,7 @@ readonly class PaymentProcessorFactory implements PaymentProcessorFactoryInterfa
     public function create(ProcessorType $processorType): PaymentProcessorInterface
     {
         return match ($processorType) {
-            ProcessorType::PAYPAL => new PaypalPaymentAdapter($this->paymentProcessor),
+            ProcessorType::PAYPAL => new PaypalPaymentAdapter($this->paypalPaymentProcessor),
             ProcessorType::STRIPE => new StripePaymentAdapter($this->stripePaymentProcessor),
         };
     }
